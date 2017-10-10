@@ -14,7 +14,9 @@ socket.on('newMessage', function (message) {
   li.text(`Nuevo mensaje -> ${message.from}: ${message.text}`);
 
   jQuery('#messages').append(li);
-  jQuery('#datos').append(message.text);
+  //jQuery('#datos').append(message.text);
+
+  jQuery('#datos').text(message.text);
 });
 
 jQuery('#message-form').on('submit', function (e) {

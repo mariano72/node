@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const hbs = require('hbs');
 
 const {generateMessage} = require('./utils/message');
 const publicPath = path.join(__dirname, '../public');
@@ -11,6 +12,7 @@ var server = http.createServer(app);
 var io = socketIO(server);
 
 app.use(express.static(publicPath));
+app.set('view engine', 'hbs');
 
 io.on('connection', (socket) => {
   console.log('New user connected');
@@ -34,3 +36,20 @@ io.on('connection', (socket) => {
 server.listen(port, () => {
   console.log(`Server is up on ${port}`);
 });
+
+
+app.get('/about', (req, res) => {
+  console.log(`nueva página`);
+  res.send({
+    errorMessage: 'entro'
+  });
+  
+});
+
+
+app.get('/pagina1', (req, res) => {
+  
+  res.render( 'pagina1.hbs');
+  
+});
+

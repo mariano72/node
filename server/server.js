@@ -14,6 +14,14 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 app.set('view engine', 'hbs');
 
+var emitirfn=function emitirfn() {
+  console.log('pubsub', 'dsds');
+  //io.emit('mariano', generateMessage("pubsun", "xxxxxx","auto server"));
+  return false;
+  
+}
+
+
 io.on('connection', (socket) => {
   console.log('New user connected');
 
@@ -31,6 +39,25 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('User was disconnected');
   });
+
+  socket.on('mariano', (message, callback) => {
+    console.log('Mensaje Mariano', message);
+    io.emit('mariano', generateMessage("respuesta Mariano", "xxxxxx","auto server"));
+    
+  });
+
+/*
+
+  var emitirfn=function emitirfn() {
+    console.log('pubsub', 'dsds');
+    io.emit('mariano', generateMessage("pubsun", "xxxxxx","auto server"));
+    return false;
+    
+  }
+
+*/
+
+
 });
 
 server.listen(port, () => {
@@ -40,9 +67,38 @@ server.listen(port, () => {
 
 app.get('/about', (req, res) => {
   console.log(`nueva página`);
-  res.send({
-    errorMessage: 'entro'
-  });
+  var redis = require('redis');
+  var client = redis.createClient();
+  
+  
+  
+
+// if you'd like to select database 3, instead of 0 (default), call 
+// client.select(3, function() { /* ... */ }); 
+
+client.on("error", function (err) {
+  console.log("Error " + err);
+});
+
+
+client.set("clave", "valor", redis.print);
+client.set("clave2", "valor2", redis.print);
+client.get("clave", redis.print);
+client.get("clave2", redis.print);
+
+//Esta es la parte de mensajería pub/sub
+client.subscribe("canal1");
+///client.quit();
+client.on("message", function(channel, message) {
+  console.log("Recibo mensaje '" + message + "' on channel '" + channel + "' arrived!");
+  emitirfn();
+  //callback('This is from the server.');
+});
+
+  
+res.send({
+    errorMessage: 'entro claves redis al sistema'
+});
   
 });
 
@@ -52,4 +108,6 @@ app.get('/pagina1', (req, res) => {
   res.render( 'pagina1.hbs');
   
 });
+
+
 

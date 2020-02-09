@@ -8,6 +8,11 @@ socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
+socket.on('mariano', function (message) {
+  console.log('Llega mensaje mariano: ' + message.from + " " + message.text);
+});
+
+
 socket.on('newMessage', function (message) {
   console.log('Nuevo mensaje index.js', message);
   var li = jQuery('<li></li>');

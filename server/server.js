@@ -92,7 +92,7 @@ client.subscribe("canal1");
 client.on("message", function(channel, message) {
   console.log("Recibo mensaje '" + message + "' on channel '" + channel + "' arrived!");
   emitirfn();
-  //callback('This is from the server.');
+  //callback('This is from the serverx.');
 });
 
   
